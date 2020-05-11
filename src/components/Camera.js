@@ -2,7 +2,9 @@ import React, { useState, useRef } from 'react';
 import logo from '../logo.svg';
 import '../App.css';
 
-import styled from 'styled-components'
+import styled from 'styled-components';
+import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid'
 
 import Measure from 'react-measure'
 
@@ -65,9 +67,28 @@ function Camera() {
     );
 
     canvasRef.current.toBlob(blob => setCardImage(blob), "image/jpeg", 1);
+    submit()
     setIsCanvasEmpty(false);
+  }
 
-    
+  function submit () {
+    let formData = new FormData();
+    formData.append('file', cardImage);
+    console.log(formData)
+
+    debugger
+
+    axios.post('https://stage.appruve.co/v1/verifications/test/file_upload',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(res => {
+        debugger
+      }).catch(err => {
+        debugger
+      })
   }
 
   function handleClear() {
